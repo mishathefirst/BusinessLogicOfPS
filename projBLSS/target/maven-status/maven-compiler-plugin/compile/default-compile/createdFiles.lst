@@ -1,0 +1,6 @@
+com\example\projBLSS\DemoApplication.class
+com\example\projBLSS\repository\PictureRepository.class
+com\example\projBLSS\service\PictureServiceImpl.class
+com\example\projBLSS\Picture.class
+com\example\projBLSS\service\PictureService.class
+com\example\projBLSS\SystemController.class
