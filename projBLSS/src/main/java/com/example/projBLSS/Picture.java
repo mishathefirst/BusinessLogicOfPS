@@ -1,9 +1,6 @@
 package com.example.projBLSS;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.File;
 
 
@@ -12,27 +9,28 @@ public class Picture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
     //private File pict;
+    private byte[] pict;
 
     public Picture() {
     }
 
-    public Picture(int id, String name) {
+    public Picture(Long id, String name, byte[] pict) {
                    //File pict) {
         this.id = id;
         this.name = name;
-        //this.pict = pict;
+        this.pict = pict;
     }
-/*
-    public File getPict() {
+
+    public byte[] getPict() {
         return pict;
     }
 
- */
 
-    public int getId() {
+
+    public Long getId() {
         return id;
     }
 
@@ -40,7 +38,7 @@ public class Picture {
         return name;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -48,8 +46,8 @@ public class Picture {
         this.name = name;
     }
 
-    public void setPict(File pict) {
-        //this.pict = pict;
+    public void setPict(byte[] pict) {
+        this.pict = pict;
     }
 
     @Override

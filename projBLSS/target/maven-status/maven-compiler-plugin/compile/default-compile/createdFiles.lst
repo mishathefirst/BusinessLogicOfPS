@@ -4,3 +4,4 @@ com\example\projBLSS\service\PictureServiceImpl.class
 com\example\projBLSS\Picture.class
 com\example\projBLSS\service\PictureService.class
 com\example\projBLSS\SystemController.class
+com\example\projBLSS\PictureDownloadResponse.class

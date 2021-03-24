@@ -22,7 +22,7 @@ public class PictureServiceImpl implements PictureService {
 
     @Override
     public Picture getPicture(int id) {
-        return pictureRepository.findById((long) id).get();
+        return pictureRepository.findById((long)id).get();
     }
 
     @Override
