@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,8 +25,18 @@ public class SystemController {
     }
 
     @GetMapping("/search/{keyword}")
-    public String showSearchResults(@PathVariable String keyword) {
-        return keyword;
+    public SearchResponse showSearchResults(@PathVariable String keyword) {
+        ArrayList<Long> index = new ArrayList<>();
+        ArrayList<String> picNames = new ArrayList<>();
+        List<Picture> allPictures = service.getAllPictures();
+        for (long i = 0; i < allPictures.size(); i++) {
+            Picture localPicture = allPictures.get((int) i);
+            if (localPicture.getName().contains(keyword)) {
+                index.add(localPicture.getId());
+                picNames.add(localPicture.getName());
+            }
+        }
+        return new SearchResponse(index, picNames);
     }
 
     @GetMapping("/download/{keyword}")
