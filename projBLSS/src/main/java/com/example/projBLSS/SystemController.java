@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -28,19 +30,39 @@ public class SystemController {
 
     @GetMapping("/download/{keyword}")
     public PictureDownloadResponse downloadPicture(@PathVariable String keyword) {
-        int index = 0;
+        long index = 0;
         List<Picture> allPictures;
         allPictures = service.getAllPictures();
-        for (int i = 0; i < allPictures.size(); i++) {
-            Picture localPicture = allPictures.get(i);
+        for (long i = 0; i < allPictures.size(); i++) {
+            Picture localPicture = allPictures.get((int) i);
             if (localPicture.getName().equals(keyword)) {
-                index = i;
+                index = localPicture.getId();
                 break;
             }
         }
         byte[] pictureToSend = service.getPicture(index).getPict();
 
+        /*
+        try {
+            File fileToSend = File.createTempFile("image", ".jpg");
+            FileOutputStream outputStream = new FileOutputStream(fileToSend);
+
+            outputStream.write(pictureToSend);
+            outputStream.flush();
+            System.out.println(fileToSend);
+            System.out.println(fileToSend.getAbsoluteFile());
+            return new PictureDownloadResponse(keyword, fileToSend);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new PictureDownloadResponse("Nothing found");
+
+         */
+
         return new PictureDownloadResponse(keyword, pictureToSend);
+
+
+        //return index;
     }
 
 
