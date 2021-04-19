@@ -1,6 +1,6 @@
 package com.example.projBLSS.service;
 
-import com.example.projBLSS.Picture;
+import com.example.projBLSS.beans.Picture;
 
 import java.util.List;
 

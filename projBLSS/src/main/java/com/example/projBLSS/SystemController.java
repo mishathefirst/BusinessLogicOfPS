@@ -1,14 +1,12 @@
 package com.example.projBLSS;
 
 
+import com.example.projBLSS.beans.Picture;
 import com.example.projBLSS.service.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +17,7 @@ public class SystemController {
     @Autowired
     private PictureService service;
 
-    @GetMapping("/")
+    @GetMapping("/hello")
     public String showHello() {
         return "Hello!";
     }

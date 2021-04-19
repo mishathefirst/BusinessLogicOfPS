@@ -1,10 +1,9 @@
 package com.example.projBLSS.service;
 
-import com.example.projBLSS.Picture;
+import com.example.projBLSS.beans.Picture;
 import com.example.projBLSS.repository.PictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
