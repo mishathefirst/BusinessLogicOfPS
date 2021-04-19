@@ -1,11 +1,13 @@
 package com.example.projBLSS.service;
 
+import com.example.projBLSS.beans.RefreshToken;
 import com.example.projBLSS.beans.Role;
 import com.example.projBLSS.beans.User;
 import com.example.projBLSS.dto.ResponseMessageDTO;
 import com.example.projBLSS.dto.TokenObject;
 import com.example.projBLSS.dto.UserDTO;
 import com.example.projBLSS.exceptions.UserNotFoundException;
+import com.example.projBLSS.repository.RefreshTokenRepository;
 import com.example.projBLSS.repository.RoleRepository;
 import com.example.projBLSS.repository.UserRepository;
 import com.example.projBLSS.utils.JWTutils;
@@ -40,6 +42,9 @@ public class ShutterstockUserDetailsService implements UserDetailsService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
+
     public ResponseEntity<ResponseMessageDTO> registerUserDTO(UserDTO userDTO){
         ResponseMessageDTO message = new ResponseMessageDTO();
         user = dtoConverter.convertUserFromDTO(userDTO);
@@ -61,12 +66,14 @@ public class ShutterstockUserDetailsService implements UserDetailsService {
 
 
 
-    public ResponseEntity<ResponseMessageDTO> authUserDTO(UserDTO userDTO){
-        ResponseMessageDTO message = new ResponseMessageDTO();
+    public ResponseEntity<TokenObject> authUserDTO(UserDTO userDTO){
+        TokenObject message = new TokenObject();
         try {
             user = this.findByLoginAndPassword(userDTO.getLogin(), userDTO.getPassword());
-            TokenObject token = new TokenObject(jwTutils.generateToken(user.getLogin()));
-            message.setAnswer(token.getAccessToken());
+            TokenObject token = new TokenObject(jwTutils.generateToken(user.getLogin()), jwTutils.generateRefreshToken(user.getLogin()));
+            refreshTokenRepository.save(new RefreshToken(user.getID(), token.getRefreshToken()));
+            message.setAccessToken(token.getAccessToken());
+            message.setRefreshToken(token.getRefreshToken());
             return new ResponseEntity<>(message, HttpStatus.ACCEPTED);
         }catch (UserNotFoundException e){
             message.setAnswer(e.getErrMessage());
@@ -77,7 +84,7 @@ public class ShutterstockUserDetailsService implements UserDetailsService {
     public User findByLoginAndPassword(String login, String password) throws UserNotFoundException{
         User user  = this.userRepository.findByLoginAndPassword(login, password);
         if(user == null){
-            throw new UserNotFoundException("Пользователь с таким email не найден", HttpStatus.BAD_REQUEST);
+            throw new UserNotFoundException("Пользователь с таким login не найден", HttpStatus.BAD_REQUEST);
         }
         return user;
     }
@@ -85,6 +92,14 @@ public class ShutterstockUserDetailsService implements UserDetailsService {
     public void save(User user)  {
         user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
         this.userRepository.save(user);
+    }
+
+    public User findByLogin(String login) throws UserNotFoundException{
+        User user  = this.userRepository.findByLogin(login);
+        if(user == null){
+            throw new UserNotFoundException("Пользователь с таким login не найден", HttpStatus.BAD_REQUEST);
+        }
+        return user;
     }
 
     @Override
