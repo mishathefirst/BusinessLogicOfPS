@@ -1,5 +1,7 @@
 package com.example.projBLSS.controllers;
 
+import com.example.projBLSS.XA.AlbumDeleteXA;
+import com.example.projBLSS.beans.Album;
 import com.example.projBLSS.dto.AlbumDTO;
 import com.example.projBLSS.dto.ResponseMessageDTO;
 import com.example.projBLSS.exceptions.AlbumNotFoundException;
@@ -22,6 +24,9 @@ public class AlbumManageController {
 
     @Autowired
     private AlbumService albumService;
+
+//    @Autowired
+//    private AlbumDeleteXA albumDeleteXA;
 
 
     @PutMapping("/create")
@@ -48,4 +53,11 @@ public class AlbumManageController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteAlbum(@PathVariable Long id) throws AlbumNotFoundException {
+        ResponseMessageDTO messageDTO = new ResponseMessageDTO();
+        Album album = albumService.findById(id);
+//        albumDeleteXA.deleteAlbum(album);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

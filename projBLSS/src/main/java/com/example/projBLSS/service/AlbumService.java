@@ -13,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -74,6 +75,12 @@ public class AlbumService {
             throw new AlbumNotFoundException("Альбом с таким id не существует", HttpStatus.BAD_REQUEST);
         }
         return album;
+    }
+
+
+    @Transactional(transactionManager = "bitronixTransactionManager")
+    public void deleteAlbum(Album album){
+
     }
 
 
