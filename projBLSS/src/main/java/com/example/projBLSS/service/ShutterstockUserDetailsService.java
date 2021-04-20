@@ -11,6 +11,9 @@ import com.example.projBLSS.repository.RefreshTokenRepository;
 import com.example.projBLSS.repository.RoleRepository;
 import com.example.projBLSS.repository.UserRepository;
 import com.example.projBLSS.utils.JWTutils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 
 
@@ -44,6 +48,8 @@ public class ShutterstockUserDetailsService implements UserDetailsService {
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
+
+    Logger logger = LogManager.getLogger(ShutterstockUserDetails.class);
 
     public ResponseEntity<ResponseMessageDTO> registerUserDTO(UserDTO userDTO){
         ResponseMessageDTO message = new ResponseMessageDTO();
@@ -90,7 +96,7 @@ public class ShutterstockUserDetailsService implements UserDetailsService {
     }
 
     public void save(User user)  {
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+        user.setRoles(Collections.singleton(new Role(2L, "ROLE_ADMIN")));
         this.userRepository.save(user);
     }
 
@@ -100,6 +106,26 @@ public class ShutterstockUserDetailsService implements UserDetailsService {
             throw new UserNotFoundException("Пользователь с таким login не найден", HttpStatus.BAD_REQUEST);
         }
         return user;
+    }
+
+    public void deleteUserById(Long id) throws UserNotFoundException {
+        user = this.userRepository.findByID(id);
+        if(user == null){
+            throw new UserNotFoundException("Пользователь с таким id не существует", HttpStatus.BAD_REQUEST);
+        }
+        this.userRepository.deleteById(id);
+    }
+
+    public User getUserFromRequest(HttpServletRequest request) throws UserNotFoundException{
+        String token = jwTutils.getTokenFromRequest(request);
+        String login = jwTutils.getLoginFromToken(token);
+        try {
+            User user = this.findByLogin(login);
+            logger.log(Level.INFO, "getting user from request" + user.getLogin());
+            return user;
+        }catch (UserNotFoundException e){
+            throw e;
+        }
     }
 
     @Override

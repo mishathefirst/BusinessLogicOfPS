@@ -1,5 +1,6 @@
 package com.example.projBLSS.configurations;
 
+import com.example.projBLSS.beans.Album;
 import com.example.projBLSS.beans.Picture;
 import com.example.projBLSS.beans.User;
 import org.springframework.context.annotation.Bean;
@@ -33,4 +34,7 @@ public class ShutterstockConfiguration extends WebMvcConfigurerAdapter {
         return new User();
     }
 
+    @Bean
+    @Scope(scopeName = "prototype")
+    public Album getAlbum(){ return new Album(); }
 }

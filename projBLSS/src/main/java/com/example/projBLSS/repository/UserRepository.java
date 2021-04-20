@@ -8,4 +8,7 @@ public interface UserRepository extends CrudRepository<User, Long>{
     User findByLogin(String login);
     User findByLoginAndPassword(String login, String password);
     User findByID(Long id);
+
+    @Override
+    void delete(User user);
 }

@@ -1,25 +1,34 @@
 package com.example.projBLSS.beans;
 
 import javax.persistence.*;
-import java.io.File;
+import java.util.List;
 
 
 @Entity
+
 public class Picture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long ID;
     private String name;
     //private File pict;
     private byte[] pict;
 
+    @ManyToMany(mappedBy = "pictures")
+    private List<Album> albums;
+
     public Picture() {
     }
 
-    public Picture(Long id, String name, byte[] pict) {
+    public Picture(String name, byte[] pict) {
+        this.name = name;
+        this.pict = pict;
+    }
+
+    public Picture(Long ID, String name, byte[] pict) {
                    //File pict) {
-        this.id = id;
+        this.ID = ID;
         this.name = name;
         this.pict = pict;
     }
@@ -31,16 +40,16 @@ public class Picture {
 
 
 
-    public Long getId() {
-        return id;
+    public Long getID() {
+        return ID;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setID(Long id) {
+        this.ID = id;
     }
 
     public void setName(String name) {
@@ -53,7 +62,7 @@ public class Picture {
 
     @Override
     public String toString() {
-        return String.format("Picture{id=%d, name='%s'}", id, name);
+        return String.format("Picture{id=%d, name='%s'}", ID, name);
     }
 
 }

@@ -36,7 +36,7 @@ public class JWTutils {
     private ShutterstockUserDetailsService userService;
 
     public String generateToken(String login){
-        Date date = new Date(System.currentTimeMillis() + 20000);
+        Date date = new Date(System.currentTimeMillis() + 300000);
         return Jwts.builder()
                 .setSubject(login)
                 .setExpiration(date)
