@@ -66,6 +66,7 @@ public class AlbumManageController {
             return new ResponseEntity(message, e.getErrStatus());
         }
         albumDeleteXA.deleteAlbum(album);
-        return new ResponseEntity(HttpStatus.OK);
+        message.setAnswer("Альбом был удален");
+        return new ResponseEntity(message, HttpStatus.OK);
     }
 }

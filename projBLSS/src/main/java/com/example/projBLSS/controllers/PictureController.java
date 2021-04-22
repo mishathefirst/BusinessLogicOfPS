@@ -129,8 +129,4 @@ public class PictureController {
 
 
 
-    @PostMapping("/{id}/change/delete/name")
-    public ResponseEntity<ResponseMessageDTO> deletePictureName(@PathVariable Long id){
-        return null;
-    }
 }
