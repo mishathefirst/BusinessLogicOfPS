@@ -59,7 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/album/*").permitAll()
                 .antMatchers("/auth/register","/auth", "/auth/refresh", "/search/*", "/download/*").permitAll()
                 .antMatchers("/admin/user/*").hasRole("ADMIN")
-                .antMatchers("/album/create", "/album/*","/upload/*", "/*/change/name").hasAnyRole("USER","ADMIN")
+                .antMatchers("/album/create", "/album/*","/upload/*", "/*/change/name", "/album/*/add/*").hasAnyRole("USER","ADMIN")
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }

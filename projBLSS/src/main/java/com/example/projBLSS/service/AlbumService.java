@@ -1,10 +1,12 @@
 package com.example.projBLSS.service;
 
 import com.example.projBLSS.beans.Album;
+import com.example.projBLSS.beans.Picture;
 import com.example.projBLSS.beans.User;
 import com.example.projBLSS.dto.AlbumDTO;
 import com.example.projBLSS.dto.ResponseMessageDTO;
 import com.example.projBLSS.exceptions.AlbumNotFoundException;
+import com.example.projBLSS.exceptions.PictureNotFoundException;
 import com.example.projBLSS.exceptions.UserNotFoundException;
 import com.example.projBLSS.repository.AlbumRepository;
 import org.hibernate.exception.ConstraintViolationException;
@@ -35,8 +37,12 @@ public class AlbumService {
     @Autowired
     private Album album;
 
-    @PersistenceContext
-    private EntityManager entityManager;
+
+    @Autowired
+    private Picture picture;
+
+    @Autowired
+    private PictureService pictureService;
 
 
     public ResponseEntity<ResponseMessageDTO> saveFromDTO(AlbumDTO albumDTO, HttpServletRequest request){
@@ -83,12 +89,19 @@ public class AlbumService {
         return album;
     }
 
-
-    @Transactional(transactionManager = "bitronixTransactionManager")
-    public void deleteAlbum(Album album){
-
+    public void addPicture(byte[] file, String name, Long albumId) throws PictureNotFoundException {
+        try {
+            album = this.findById(albumId);
+            picture.setName(name);
+            picture.setPict(file);
+            pictureService.addPicture(picture);
+            album.addPicture(picture);
+            albumRepository.save(album);
+        }catch (AlbumNotFoundException e){
+            e.setErrMessage("Альбома по данному id не найдено");
+            e.setErrStatus(HttpStatus.BAD_REQUEST);
+        }
     }
-
 
 
 

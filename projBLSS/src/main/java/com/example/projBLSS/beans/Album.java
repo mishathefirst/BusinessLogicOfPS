@@ -30,6 +30,9 @@ public class Album {
         this.user_id = user_id;
     }
 
+    public void addPicture(Picture picture){
+        this.pictures.add(picture);
+    }
     public Long getID() {
         return ID;
     }

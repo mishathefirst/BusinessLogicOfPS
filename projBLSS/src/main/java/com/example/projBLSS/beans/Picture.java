@@ -60,6 +60,8 @@ public class Picture {
         this.pict = pict;
     }
 
+
+
     @Override
     public String toString() {
         return String.format("Picture{id=%d, name='%s'}", ID, name);

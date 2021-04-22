@@ -6,6 +6,7 @@ import com.example.projBLSS.dto.AlbumDTO;
 import com.example.projBLSS.dto.ResponseMessageDTO;
 import com.example.projBLSS.exceptions.AlbumNotFoundException;
 import com.example.projBLSS.exceptions.AlbumValidationException;
+import com.example.projBLSS.exceptions.PictureNotFoundException;
 import com.example.projBLSS.service.AlbumService;
 import com.example.projBLSS.validation.ValidationAlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +69,23 @@ public class AlbumManageController {
         albumDeleteXA.deleteAlbum(album);
         message.setAnswer("Альбом был удален");
         return new ResponseEntity(message, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/add/{name}")
+    public ResponseEntity addPictureToAlbum(@PathVariable Long id, @RequestBody byte[] picture, @PathVariable String name){
+        ResponseMessageDTO message = new ResponseMessageDTO();
+        try {
+            album = albumService.findById(id);
+            albumService.addPicture(picture, name, id);
+        }catch (AlbumNotFoundException e){
+            message.setAnswer(e.getErrMessage());
+            return new ResponseEntity(message, e.getErrStatus());
+        }catch (PictureNotFoundException e){
+            message.setAnswer(e.getErrMessage());
+            return new ResponseEntity(message, e.getErrStatus());
+        }
+        message.setAnswer("Картинка была успешно добавлена!");
+        return new ResponseEntity(message, HttpStatus.ACCEPTED);
+
     }
 }
