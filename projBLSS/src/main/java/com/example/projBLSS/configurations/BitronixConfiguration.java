@@ -16,29 +16,32 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-//@Configuration
-//@EnableTransactionManagement
+@Configuration
+@EnableTransactionManagement
 public class BitronixConfiguration {
 
-//    @Bean
-//    public AlbumDeleteXA albumDeleteXA(){
-//        return new AlbumDeleteXA();
-//    }
-//
-//
-//    @Bean(destroyMethod = "shutdown")
-//    public BitronixTransactionManager bitronixManager() {
-//        return TransactionManagerServices.getTransactionManager();
-//    }
-//
-//    @Bean
-//    public JtaTransactionManager jtaTransactionManager() {
-//        JtaTransactionManager jta = new JtaTransactionManager();
-//        jta.setTransactionManager(bitronixManager());
-//        jta.setUserTransaction(bitronixManager());
-//        return jta;
-//    }
-//
+    @Bean
+    public AlbumDeleteXA albumDeleteXA(){
+        return new AlbumDeleteXA();
+    }
+
+
+    @Bean(destroyMethod = "shutdown")
+    public BitronixTransactionManager bitronixManager() {
+        return TransactionManagerServices.getTransactionManager();
+    }
+
+    @Bean(name = "transactionManager")
+    public PlatformTransactionManager jtaTransactionManager() {
+        JtaTransactionManager jta = new JtaTransactionManager();
+        jta.setTransactionManager(bitronixManager());
+        jta.setUserTransaction(bitronixManager());
+        jta.setRollbackOnCommitFailure(true);
+        return jta;
+    }
+
+
+
 //    @Bean(destroyMethod = "close", name = "dataSourceOne")
 //    public DataSource dataSourceOne() {
 //        PoolingDataSource ds = new PoolingDataSource();

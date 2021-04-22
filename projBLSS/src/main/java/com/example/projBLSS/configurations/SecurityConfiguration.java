@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -55,10 +56,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/album/*").permitAll()
+                .antMatchers("/auth/register","/auth", "/auth/refresh", "/search/*", "/download/*").permitAll()
                 .antMatchers("/admin/user/*").hasRole("ADMIN")
-                .antMatchers("/album/create", "/album/*","/upload/*").hasAnyRole("USER","ADMIN")
-                .antMatchers("/auth/register", "/auth", "/auth/refresh", "/search/*", "/download/*")
-                .permitAll()
+                .antMatchers("/album/create", "/album/*","/upload/*", "/*/change/name").hasAnyRole("USER","ADMIN")
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }

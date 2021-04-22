@@ -15,9 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
+
 public class AlbumService {
 
     @Autowired
@@ -31,6 +34,9 @@ public class AlbumService {
 
     @Autowired
     private Album album;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
     public ResponseEntity<ResponseMessageDTO> saveFromDTO(AlbumDTO albumDTO, HttpServletRequest request){

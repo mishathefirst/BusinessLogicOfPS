@@ -25,8 +25,11 @@ public class AlbumManageController {
     @Autowired
     private AlbumService albumService;
 
-//    @Autowired
-//    private AlbumDeleteXA albumDeleteXA;
+    @Autowired
+    private AlbumDeleteXA albumDeleteXA;
+
+    @Autowired
+    private Album album;
 
 
     @PutMapping("/create")
@@ -54,10 +57,15 @@ public class AlbumManageController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteAlbum(@PathVariable Long id) throws AlbumNotFoundException {
-        ResponseMessageDTO messageDTO = new ResponseMessageDTO();
-        Album album = albumService.findById(id);
-//        albumDeleteXA.deleteAlbum(album);
+    public ResponseEntity deleteAlbum(@PathVariable Long id) {
+        ResponseMessageDTO message = new ResponseMessageDTO();
+        try {
+            album = albumService.findById(id);
+        }catch (AlbumNotFoundException e){
+            message.setAnswer(e.getErrMessage());
+            return new ResponseEntity(message, e.getErrStatus());
+        }
+        albumDeleteXA.deleteAlbum(album);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

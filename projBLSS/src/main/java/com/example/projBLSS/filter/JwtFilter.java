@@ -3,7 +3,7 @@ package com.example.projBLSS.filter;
 
 import com.example.projBLSS.service.ShutterstockUserDetailsService;
 import com.example.projBLSS.utils.JWTutils;
-import com.fasterxml.jackson.core.JsonParseException;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import org.apache.logging.log4j.Level;

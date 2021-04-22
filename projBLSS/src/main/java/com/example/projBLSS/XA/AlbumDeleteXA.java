@@ -13,18 +13,14 @@ import java.util.logging.Logger;
 public class AlbumDeleteXA {
 
 
-//    @Autowired
-//    @Qualifier(value = "dataSourceOne")
-//    private DataSource ds1;
+    @Autowired
+    private DataSource ds1;
 
 
-//    @Transactional
-//    public void deleteAlbum(Album album){
-//        try {
-//            ds1.getConnection().commit();
-//        } catch (SQLException throwables) {
-//            System.out.println("suka");
-//        }
-//    }
+
+    @Transactional
+    public void deleteAlbum(Album album){
+        System.out.println(1);
+    }
 
 }
