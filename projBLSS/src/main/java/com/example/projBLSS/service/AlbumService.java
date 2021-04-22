@@ -89,7 +89,7 @@ public class AlbumService {
         return album;
     }
 
-    public void addPicture(byte[] file, String name, Long albumId) throws PictureNotFoundException {
+    public void addPicture(byte[] file, String name, Long albumId) throws AlbumNotFoundException {
         try {
             album = this.findById(albumId);
             picture.setName(name);
@@ -100,8 +100,28 @@ public class AlbumService {
         }catch (AlbumNotFoundException e){
             e.setErrMessage("Альбома по данному id не найдено");
             e.setErrStatus(HttpStatus.BAD_REQUEST);
+            throw e;
         }
     }
+
+
+    public void addExistingPicture(Long id, Long pictureId) throws AlbumNotFoundException, PictureNotFoundException {
+        try{
+            album = this.findById(id);
+            picture = pictureService.getPicture(pictureId);
+            album.addPicture(picture);
+            albumRepository.save(album);
+        }catch (AlbumNotFoundException e){
+            e.setErrMessage("Альбома по данному id не найдено");
+            e.setErrStatus(HttpStatus.BAD_REQUEST);
+            throw e;
+        }catch (PictureNotFoundException e){
+            e.setErrMessage("Картинки с данным id не существует");
+            e.setErrStatus(HttpStatus.BAD_REQUEST);
+            throw e;
+        }
+    }
+
 
 
 

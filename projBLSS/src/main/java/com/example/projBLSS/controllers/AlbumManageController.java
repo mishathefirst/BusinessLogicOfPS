@@ -80,12 +80,29 @@ public class AlbumManageController {
         }catch (AlbumNotFoundException e){
             message.setAnswer(e.getErrMessage());
             return new ResponseEntity(message, e.getErrStatus());
+        }
+        message.setAnswer("Картинка была успешно добавлена!");
+        return new ResponseEntity(message, HttpStatus.ACCEPTED);
+
+    }
+
+    @PutMapping("/{id}/add/exist")
+    public ResponseEntity addPictureExistingToAlbum(@PathVariable Long id, @RequestBody Long pictureId) {
+        ResponseMessageDTO message = new ResponseMessageDTO();
+        try {
+            album = albumService.findById(id);
+            albumService.addExistingPicture(id, pictureId);
+        }catch (AlbumNotFoundException e){
+            message.setAnswer(e.getErrMessage());
+            return new ResponseEntity(message, e.getErrStatus());
         }catch (PictureNotFoundException e){
             message.setAnswer(e.getErrMessage());
             return new ResponseEntity(message, e.getErrStatus());
         }
         message.setAnswer("Картинка была успешно добавлена!");
         return new ResponseEntity(message, HttpStatus.ACCEPTED);
-
     }
+
+
+
 }
