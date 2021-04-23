@@ -66,7 +66,12 @@ public class AlbumManageController {
             message.setAnswer(e.getErrMessage());
             return new ResponseEntity(message, e.getErrStatus());
         }
-        albumDeleteXA.deleteAlbum(album);
+        try {
+            albumDeleteXA.deleteAlbum(album);
+        }catch (PictureNotFoundException e){
+            message.setAnswer(e.getErrMessage());
+            return new ResponseEntity(message, e.getErrStatus());
+        }
         message.setAnswer("Альбом был удален");
         return new ResponseEntity(message, HttpStatus.OK);
     }
