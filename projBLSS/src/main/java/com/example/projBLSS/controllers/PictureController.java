@@ -74,27 +74,6 @@ public class PictureController {
             return new ResponseEntity<>(pictureDTO, HttpStatus.BAD_REQUEST);
         }
 
-        /*
-        try {
-            File fileToSend = File.createTempFile("image", ".jpg");
-            FileOutputStream outputStream = new FileOutputStream(fileToSend);
-
-            outputStream.write(pictureToSend);
-            outputStream.flush();
-            System.out.println(fileToSend);
-            System.out.println(fileToSend.getAbsoluteFile());
-            return new PictureDownloadResponse(keyword, fileToSend);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new PictureDownloadResponse("Nothing found");
-
-         */
-
-
-
-
-        //return index;
     }
 
 
@@ -127,6 +106,11 @@ public class PictureController {
     }
 
 
-
+    @PostMapping("/{id}/like/{count}")
+    public ResponseEntity<ResponseMessageDTO> likePicture(@PathVariable Long id, @PathVariable Long count){
+        ResponseMessageDTO message = new ResponseMessageDTO();
+        message.setAnswer(String.valueOf(service.likePicture(id, count)));
+        return new ResponseEntity<>(message, HttpStatus.ACCEPTED);
+    }
 
 }

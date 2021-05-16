@@ -91,12 +91,13 @@ public class AlbumManageController {
 
     }
 
-    @PutMapping("/{id}/add/exist")
-    public ResponseEntity addPictureExistingToAlbum(@PathVariable Long id, @RequestBody Long pictureId) {
+    @PutMapping("/{id}/add/exist/{p_id}")
+    public ResponseEntity addPictureExistingToAlbum(@PathVariable Long id, @PathVariable Long p_id) {
         ResponseMessageDTO message = new ResponseMessageDTO();
         try {
             album = albumService.findById(id);
-            albumService.addExistingPicture(id, pictureId);
+            System.out.println(p_id);
+            albumService.addExistingPicture(id, p_id);
         }catch (AlbumNotFoundException e){
             message.setAnswer(e.getErrMessage());
             return new ResponseEntity(message, e.getErrStatus());

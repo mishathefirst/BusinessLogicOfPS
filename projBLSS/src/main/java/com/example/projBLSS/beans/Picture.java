@@ -5,16 +5,17 @@ import java.util.List;
 
 
 @Entity
-
+@Table(name = "t_picture")
 public class Picture {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long ID;
     private String name;
     //private File pict;
     private byte[] pict;
-
+    @Column(columnDefinition = "integer default 0")
+    private Long likes = 0L;
     @ManyToMany(mappedBy = "pictures")
     private List<Album> albums;
 
@@ -27,7 +28,6 @@ public class Picture {
     }
 
     public Picture(Long ID, String name, byte[] pict) {
-                   //File pict) {
         this.ID = ID;
         this.name = name;
         this.pict = pict;
@@ -60,7 +60,13 @@ public class Picture {
         this.pict = pict;
     }
 
+    public long getLikes() {
+        return likes;
+    }
 
+    public void setLikes(long likes) {
+        this.likes = likes;
+    }
 
     @Override
     public String toString() {

@@ -12,6 +12,7 @@ public class PictureDTO implements Serializable {
     private byte[] pict;
 
     private String answer;
+    private long like;
 
 
     public PictureDTO() {
@@ -56,6 +57,14 @@ public class PictureDTO implements Serializable {
 
     public String getAnswer() {
         return answer;
+    }
+
+    public long getLike() {
+        return like;
+    }
+
+    public void setLike(long like) {
+        this.like = like;
     }
 
     public void setAnswer(String answer) {

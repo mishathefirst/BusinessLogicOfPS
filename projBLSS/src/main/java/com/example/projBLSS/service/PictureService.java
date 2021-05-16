@@ -59,4 +59,8 @@ public class PictureService {
     public long countPictures() {
         return pictureRepository.count();
     }
+
+    public int likePicture(Long id, Long incValue){
+        return pictureRepository.incrementLikeField(id, incValue);
+    }
 }

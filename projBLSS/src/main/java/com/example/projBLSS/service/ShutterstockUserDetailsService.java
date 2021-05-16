@@ -96,7 +96,9 @@ public class ShutterstockUserDetailsService implements UserDetailsService {
     }
 
     public void save(User user)  {
-        user.setRoles(Collections.singleton(new Role(2L, "ROLE_ADMIN")));
+        //roleRepository.save(new Role(1L, "ROLE_USER"));
+        //roleRepository.save(new Role(2L, "ROLE_ADMIN"));
+        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
         this.userRepository.save(user);
     }
 
