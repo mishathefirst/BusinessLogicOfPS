@@ -14,6 +14,10 @@ import java.util.List;
 @Repository
 public interface PictureRepository extends CrudRepository<Picture, Long> {
     Picture findByID(Long id);
+
+    @Override
+    <S extends Picture> S save(S s);
+
     List<Picture> findAll();
     @Modifying
     @Transactional

@@ -1,5 +1,7 @@
 package com.example.projBLSS.main_server.beans;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,6 +14,8 @@ public class Picture {
     @GeneratedValue
     private Long ID;
     private String name;
+    @NotNull
+    private Long userID;
     //private File pict;
     private byte[] pict;
     @Column(columnDefinition = "integer default 0")
@@ -66,6 +70,14 @@ public class Picture {
 
     public void setLikes(long likes) {
         this.likes = likes;
+    }
+
+    public Long getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Long userID) {
+        this.userID = userID;
     }
 
     @Override

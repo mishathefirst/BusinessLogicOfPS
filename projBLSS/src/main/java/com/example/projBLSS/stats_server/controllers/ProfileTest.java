@@ -7,16 +7,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Profile("stats")
 public class ProfileTest {
 
-    @Autowired
-    private RabbitLikeProducer sender;
-
-    @GetMapping("/test")
-    public String testProfile(){
-        sender.produce();
-        return "Hello";
-
-    }
+//    @Autowired
+//    private RabbitLikeProducer sender;
+//
+//    @GetMapping("/test")
+//    public String testProfile(){
+//        sender.produce();
+//        return "Hello";
+//
+//    }
 }

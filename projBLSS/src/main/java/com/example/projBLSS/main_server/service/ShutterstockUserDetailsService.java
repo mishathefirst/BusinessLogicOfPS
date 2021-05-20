@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -58,7 +59,7 @@ public class ShutterstockUserDetailsService implements UserDetailsService {
             this.save(user);
             message.setAnswer("Вы были успешно зарегистрированы");
         }catch (DataIntegrityViolationException e){
-            if(e.getCause().getClass() == ConstraintViolationException.class){
+            if(e.getCause().getClass() == ConstraintViolationException.class ){
                 answerText = "Пользователь с таким логином уже существует";
             }else{
                 answerText = "УПС! Произошла ошибка, пожалуйста, попробуйте позднее";

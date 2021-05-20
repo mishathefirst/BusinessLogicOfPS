@@ -4,12 +4,14 @@ import com.example.projBLSS.main_server.beans.Album;
 import com.example.projBLSS.main_server.beans.Picture;
 import com.example.projBLSS.main_server.beans.User;
 import org.springframework.context.annotation.*;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
 @EnableWebMvc
+@EnableAsync
 public class ShutterstockConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

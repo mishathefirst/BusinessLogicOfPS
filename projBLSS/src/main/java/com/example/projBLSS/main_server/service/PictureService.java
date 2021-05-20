@@ -4,16 +4,22 @@ import com.example.projBLSS.main_server.beans.Picture;
 import com.example.projBLSS.main_server.exceptions.PictureNotFoundException;
 import com.example.projBLSS.main_server.repository.PictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 @Service
 public class PictureService {
 
     @Autowired
     private PictureRepository pictureRepository;
+
 
 
     public Picture addPicture(Picture picture) {
@@ -59,7 +65,11 @@ public class PictureService {
         return pictureRepository.count();
     }
 
-    public int likePicture(Long id, Long incValue){
-        return pictureRepository.incrementLikeField(id, incValue);
+
+
+    @Profile("stats")
+    public int incrementLikePicture(Long id, Long incValue) throws PictureNotFoundException {
+        getPicture(id);
+        return this.pictureRepository.incrementLikeField(id, incValue);
     }
 }

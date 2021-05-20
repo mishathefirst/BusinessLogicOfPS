@@ -5,7 +5,10 @@ import com.example.projBLSS.main_server.dto.PictureDTO;
 import com.example.projBLSS.main_server.beans.Picture;
 import com.example.projBLSS.main_server.dto.ResponseMessageDTO;
 import com.example.projBLSS.main_server.exceptions.PictureNotFoundException;
+import com.example.projBLSS.main_server.exceptions.UserNotFoundException;
 import com.example.projBLSS.main_server.service.PictureService;
+import com.example.projBLSS.main_server.service.ShutterstockUserDetailsService;
+import com.example.projBLSS.rabbit_service.producing.ProducingService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.context.annotation.Profile;
@@ -13,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +26,13 @@ import java.util.List;
 public class PictureController {
 
     @Autowired
+    private ShutterstockUserDetailsService userService;
+
+    @Autowired
     private PictureService service;
+
+    @Autowired
+    private ProducingService producingService;
 
     @Autowired
     private Picture picture;
@@ -79,13 +89,20 @@ public class PictureController {
 
 
     @PostMapping("/upload/{name}")
-    public ResponseEntity uploadPicture(@PathVariable String name, @RequestBody byte[] file) {
+    public ResponseEntity uploadPicture(@PathVariable String name, @RequestBody byte[] file, HttpServletRequest request) {
         ResponseMessageDTO message = new ResponseMessageDTO();
-        picture.setPict(file);
-        picture.setName(name);
-        service.addPicture(picture);
-        message.setAnswer("Picture was added");
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        try {
+            picture.setID(null);
+            picture.setPict(file);
+            picture.setName(name);
+            picture.setUserID(this.userService.getUserFromRequest(request).getID());
+            service.addPicture(picture);
+            message.setAnswer("Picture was added");
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } catch (UserNotFoundException e){
+            message.setAnswer(e.getErrMessage());
+            return new ResponseEntity<>(message, e.getErrStatus());
+        }
     }
 
 
@@ -113,7 +130,8 @@ public class PictureController {
             count = 1L;
         }
         ResponseMessageDTO message = new ResponseMessageDTO();
-        message.setAnswer(String.valueOf(service.likePicture(id, count)));
+        producingService.likePicture(id, count);
+        message.setAnswer("good");
         return new ResponseEntity<>(message, HttpStatus.ACCEPTED);
     }
 

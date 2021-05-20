@@ -70,4 +70,6 @@ public class PictureDTO implements Serializable {
     public void setAnswer(String answer) {
         this.answer = answer;
     }
+
+
 }

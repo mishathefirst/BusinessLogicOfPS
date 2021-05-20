@@ -13,7 +13,6 @@ public class User {
     @Id
     @GeneratedValue
     private Long ID;
-
     @NotNull
     @Column(unique = true)
     private String login;
@@ -56,5 +55,7 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+
 }
 
