@@ -66,6 +66,9 @@ public class PictureService {
     }
 
 
+    public void changeIsNotificate(Long id){
+        this.pictureRepository.changeIsNotificate(id);
+    }
 
     @Profile("stats")
     public int incrementLikePicture(Long id, Long incValue) throws PictureNotFoundException {

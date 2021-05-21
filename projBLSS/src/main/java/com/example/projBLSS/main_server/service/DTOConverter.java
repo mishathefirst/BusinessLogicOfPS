@@ -25,6 +25,7 @@ public class DTOConverter {
     public User convertUserFromDTO(UserDTO userDTO){
         user.setLogin(userDTO.getLogin());
         user.setPassword(userDTO.getPassword());
+        user.setEmail(userDTO.getEmail());
         if(userDTO.getId() != null){
             userDTO.setId(userDTO.getId());
         }

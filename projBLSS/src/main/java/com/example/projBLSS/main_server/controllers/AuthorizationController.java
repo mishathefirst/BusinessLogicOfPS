@@ -3,6 +3,7 @@ package com.example.projBLSS.main_server.controllers;
 import com.example.projBLSS.main_server.dto.ResponseMessageDTO;
 import com.example.projBLSS.main_server.dto.TokenObject;
 import com.example.projBLSS.main_server.dto.UserDTO;
+import com.example.projBLSS.main_server.exceptions.UserNotFoundException;
 import com.example.projBLSS.main_server.exceptions.UserValidationException;
 import com.example.projBLSS.main_server.service.ShutterstockUserDetailsService;
 import com.example.projBLSS.main_server.utils.JWTutils;
@@ -22,8 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/auth")
 @Profile("dev")
 @Api(value = "Authorization api")
-
-// TODO допилить фильтр ( проверка всех exception для jwt)
 public class AuthorizationController {
 
     @Autowired
@@ -75,6 +74,17 @@ public class AuthorizationController {
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    @PostMapping ("/change/email")
+    public ResponseEntity<ResponseMessageDTO> changeEmail(@RequestBody UserDTO userDTO, HttpServletRequest servletRequest){
+        ResponseMessageDTO message = new ResponseMessageDTO();
+        try {
+            return this.userService.changeEmail(userService.getUserFromRequest(servletRequest).getID(), userDTO.getEmail());
+        }catch (UserNotFoundException e){
+            message.setAnswer(e.getErrMessage());
+            return new ResponseEntity<>(message, e.getErrStatus());
+        }
     }
 
 }

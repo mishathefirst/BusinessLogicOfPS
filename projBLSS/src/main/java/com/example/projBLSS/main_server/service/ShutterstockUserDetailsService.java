@@ -102,6 +102,13 @@ public class ShutterstockUserDetailsService implements UserDetailsService {
         this.userRepository.save(user);
     }
 
+    public ResponseEntity<ResponseMessageDTO> changeEmail(Long id, String email){
+        ResponseMessageDTO message = new ResponseMessageDTO();
+        this.userRepository.changeEmail(id, email);
+        message.setAnswer("Email был успешно изменен");
+        return new ResponseEntity(message, HttpStatus.ACCEPTED);
+    }
+
     public User findByLogin(String login) throws UserNotFoundException{
         User user  = this.userRepository.findByLogin(login);
         if(user == null){
@@ -129,6 +136,8 @@ public class ShutterstockUserDetailsService implements UserDetailsService {
             throw e;
         }
     }
+
+
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {

@@ -131,7 +131,7 @@ public class PictureController {
         }
         ResponseMessageDTO message = new ResponseMessageDTO();
         producingService.likePicture(id, count);
-        message.setAnswer("good");
+        message.setAnswer("Запрос на увеличение лайка отправлен!");
         return new ResponseEntity<>(message, HttpStatus.ACCEPTED);
     }
 

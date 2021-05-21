@@ -24,4 +24,9 @@ public interface PictureRepository extends CrudRepository<Picture, Long> {
     @Query("update Picture p set p.likes = p.likes + :incValue where p.ID = :id")
     int incrementLikeField(@Param("id") Long id,
                            @Param("incValue") Long incValue);
+
+    @Modifying
+    @Transactional
+    @Query("update Picture p set p.isNotificateUser = true where p.ID = :id")
+    int changeIsNotificate(@Param("id") Long id);
 }

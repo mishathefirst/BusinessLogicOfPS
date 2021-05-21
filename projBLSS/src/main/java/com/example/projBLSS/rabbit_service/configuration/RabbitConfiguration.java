@@ -2,7 +2,6 @@ package com.example.projBLSS.rabbit_service.configuration;
 
 
 import com.example.projBLSS.rabbit_service.consuming.RabbitLikeConsumer;
-import com.example.projBLSS.rabbit_service.producing.MessageContainer;
 import com.example.projBLSS.rabbit_service.producing.RabbitLikeProducer;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
@@ -24,10 +23,6 @@ public class RabbitConfiguration {
         return new Queue("likes1", true, false, true);
     }
 
-    @Bean
-    public MessageContainer messageContainer(){
-        return new MessageContainer();
-    }
 
 
     @Profile("stats")

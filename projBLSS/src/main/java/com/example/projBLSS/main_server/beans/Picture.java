@@ -23,6 +23,9 @@ public class Picture {
     @ManyToMany(mappedBy = "pictures")
     private List<Album> albums;
 
+    @Column(columnDefinition = "boolean default false")
+    private boolean isNotificateUser;
+
     public Picture() {
     }
 
@@ -78,6 +81,14 @@ public class Picture {
 
     public void setUserID(Long userID) {
         this.userID = userID;
+    }
+
+    public boolean isNotificateUser() {
+        return isNotificateUser;
+    }
+
+    public void setNotificateUser(boolean notificateUser) {
+        isNotificateUser = notificateUser;
     }
 
     @Override

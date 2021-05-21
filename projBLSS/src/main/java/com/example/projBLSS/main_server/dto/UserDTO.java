@@ -6,6 +6,7 @@ public class UserDTO implements Serializable {
     private Long Id;
     private String password;
     private String login;
+    private String email;
 
 
 //    public void settingWrapperUser(String surname,
@@ -41,5 +42,13 @@ public class UserDTO implements Serializable {
 
     public void setId(Long id) {
         Id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

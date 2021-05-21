@@ -4,14 +4,20 @@ package com.example.projBLSS.rabbit_service.consuming;
 import com.example.projBLSS.main_server.dto.PictureToStatsServerDTO;
 import com.example.projBLSS.main_server.dto.ResponseMessageDTO;
 import com.example.projBLSS.main_server.exceptions.PictureNotFoundException;
+import com.example.projBLSS.main_server.filter.JwtFilter;
 import com.example.projBLSS.main_server.service.PictureService;
-import com.example.projBLSS.rabbit_service.websocket.WebSocketService;
+import com.example.projBLSS.rabbit_service.mail.MailService;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 
 
 @RabbitListener(queues = "likes1", containerFactory = "jsaFactory")
+@Profile("stats")
 public class RabbitLikeConsumer {
 
     @Autowired
@@ -19,23 +25,17 @@ public class RabbitLikeConsumer {
 
     @Autowired
     private ConsumerService consumerService;
-
-
-    @Autowired
-    private WebSocketService webSocketService;
+    Logger logger = LogManager.getLogger(JwtFilter.class);
 
 
     @RabbitHandler
     public void receive(PictureToStatsServerDTO picture){
-        ResponseMessageDTO message = new ResponseMessageDTO();
         try {
+            logger.log(Level.INFO, "Received picture with id=" + picture.getId());
             this.pictureService.incrementLikePicture(picture.getId(), picture.getCountLikesToAdd());
-            if(!consumerService.checkLikeGoal(picture.getId())){
-                message.setAnswer("Лайк был установлен");
-            }
-            webSocketService.send(message, pictureService.getPicture(picture.getId()).getUserID());
+            consumerService.checkLikeGoal(picture);
         }catch (PictureNotFoundException e){
-            message.setAnswer(e.getErrMessage());
+            logger.log(Level.ERROR, "Picture with id=" + picture.getId() + " doesn't exists");
         }
     }
 

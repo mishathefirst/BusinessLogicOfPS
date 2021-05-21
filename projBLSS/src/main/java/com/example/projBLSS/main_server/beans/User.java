@@ -20,8 +20,8 @@ public class User {
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
-
-
+    @NotNull
+    private String email;
 
     public Long getID() {
         return ID;
@@ -57,5 +57,12 @@ public class User {
     }
 
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String emal) {
+        this.email = emal;
+    }
 }
 
