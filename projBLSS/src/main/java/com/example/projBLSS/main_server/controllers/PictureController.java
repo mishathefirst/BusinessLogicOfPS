@@ -126,9 +126,6 @@ public class PictureController {
 
     @PostMapping("/{id}/like/{count}")
     public ResponseEntity<ResponseMessageDTO> likePicture(@PathVariable Long id, @PathVariable Long count){
-        if (count == null){
-            count = 1L;
-        }
         ResponseMessageDTO message = new ResponseMessageDTO();
         producingService.likePicture(id, count);
         message.setAnswer("Запрос на увеличение лайка отправлен!");

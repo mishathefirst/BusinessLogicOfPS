@@ -23,8 +23,6 @@ public class RabbitLikeConsumer {
     @Autowired
     private PictureService pictureService;
 
-    @Autowired
-    private ConsumerService consumerService;
     Logger logger = LogManager.getLogger(JwtFilter.class);
 
 
@@ -33,7 +31,6 @@ public class RabbitLikeConsumer {
         try {
             logger.log(Level.INFO, "Received picture with id=" + picture.getId());
             this.pictureService.incrementLikePicture(picture.getId(), picture.getCountLikesToAdd());
-            consumerService.checkLikeGoal(picture);
         }catch (PictureNotFoundException e){
             logger.log(Level.ERROR, "Picture with id=" + picture.getId() + " doesn't exists");
         }
