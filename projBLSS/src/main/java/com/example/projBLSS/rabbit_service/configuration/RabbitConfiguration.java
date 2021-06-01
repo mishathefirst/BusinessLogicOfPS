@@ -20,7 +20,7 @@ public class RabbitConfiguration {
 
     @Bean
     public Queue likePictureQueue(){
-        return new Queue("likes1", true, false, true);
+        return new Queue("likes1", true, false, false);
     }
 
 
